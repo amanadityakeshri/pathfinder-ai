@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PATHFINDER — AI Planning Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="noise"></div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-icon">◈</span>
+      <div>
+        <div class="brand-title">PATHFINDER</div>
+        <div class="brand-sub">AI Planning Agent</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">ALGORITHM</div>
+      <div class="algo-group">
+        <label class="algo-opt" data-algo="bfs">
+          <input type="radio" name="algo" value="bfs" checked>
+          <div class="algo-card">
+            <span class="algo-name">BFS</span>
+            <span class="algo-desc">Breadth-First Search</span>
+            <span class="algo-badge">Optimal</span>
+          </div>
+        </label>
+        <label class="algo-opt" data-algo="ucs">
+          <input type="radio" name="algo" value="ucs">
+          <div class="algo-card">
+            <span class="algo-name">UCS</span>
+            <span class="algo-desc">Uniform Cost Search</span>
+            <span class="algo-badge">Optimal</span>
+          </div>
+        </label>
+        <label class="algo-opt" data-algo="dijkstra">
+          <input type="radio" name="algo" value="dijkstra">
+          <div class="algo-card">
+            <span class="algo-name">Dijkstra</span>
+            <span class="algo-desc">Weighted Shortest Path</span>
+            <span class="algo-badge">Optimal</span>
+          </div>
+        </label>
+        <label class="algo-opt" data-algo="astar">
+          <input type="radio" name="algo" value="astar">
+          <div class="algo-card">
+            <span class="algo-name">A*</span>
+            <span class="algo-desc">Heuristic Search</span>
+            <span class="algo-badge best">Fastest</span>
+          </div>
+        </label>
+        <label class="algo-opt" data-algo="greedy">
+          <input type="radio" name="algo" value="greedy">
+          <div class="algo-card">
+            <span class="algo-name">Greedy</span>
+            <span class="algo-desc">Best-First Search</span>
+            <span class="algo-badge warn">Not Optimal</span>
+          </div>
+        </label>
+        <label class="algo-opt" data-algo="dfs">
+          <input type="radio" name="algo" value="dfs">
+          <div class="algo-card">
+            <span class="algo-name">DFS</span>
+            <span class="algo-desc">Depth-First Search</span>
+            <span class="algo-badge warn">Not Optimal</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">GRID TOOLS</div>
+      <div class="tools-row">
+        <button class="tool-btn active" id="tool-wall" onclick="setTool('wall')">
+          <span>■</span> Wall
+        </button>
+        <button class="tool-btn" id="tool-start" onclick="setTool('start')">
+          <span>▲</span> Start
+        </button>
+        <button class="tool-btn" id="tool-goal" onclick="setTool('goal')">
+          <span>★</span> Goal
+        </button>
+        <button class="tool-btn" id="tool-weight" onclick="setTool('weight')">
+          <span>◉</span> Weight
+        </button>
+      </div>
+      <div class="weight-info">Weighted cells cost ×3 to traverse</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">SPEED</div>
+      <div class="speed-row">
+        <span class="speed-label">Slow</span>
+        <input type="range" id="speed" min="1" max="5" value="3" class="slider">
+        <span class="speed-label">Fast</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">PRESETS</div>
+      <div class="preset-row">
+        <button class="preset-btn" onclick="loadPreset('maze')">Maze</button>
+        <button class="preset-btn" onclick="loadPreset('diagonal')">Diagonal</button>
+        <button class="preset-btn" onclick="loadPreset('spiral')">Spiral</button>
+        <button class="preset-btn" onclick="loadPreset('random')">Random</button>
+      </div>
+    </div>
+
+    <div class="action-btns">
+      <button class="btn-run" onclick="run()">
+        <span class="btn-icon">▶</span> RUN
+      </button>
+      <button class="btn-clear" onclick="clearPath()">Clear Path</button>
+      <button class="btn-reset" onclick="resetGrid()">Reset All</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="top-bar">
+      <div class="stat-card" id="stat-nodes">
+        <div class="stat-val" id="val-nodes">—</div>
+        <div class="stat-key">NODES EXPLORED</div>
+      </div>
+      <div class="stat-card" id="stat-path">
+        <div class="stat-val" id="val-path">—</div>
+        <div class="stat-key">PATH LENGTH</div>
+      </div>
+      <div class="stat-card" id="stat-cost">
+        <div class="stat-val" id="val-cost">—</div>
+        <div class="stat-key">TOTAL COST</div>
+      </div>
+      <div class="stat-card" id="stat-time">
+        <div class="stat-val" id="val-time">—</div>
+        <div class="stat-key">TIME (ms)</div>
+      </div>
+    </div>
+
+    <div class="grid-wrapper">
+      <div id="grid"></div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch agent"></div><span>Start</span></div>
+      <div class="legend-item"><div class="legend-swatch goal"></div><span>Goal</span></div>
+      <div class="legend-item"><div class="legend-swatch wall"></div><span>Wall</span></div>
+      <div class="legend-item"><div class="legend-swatch weight-cell"></div><span>Weight ×3</span></div>
+      <div class="legend-item"><div class="legend-swatch visited"></div><span>Explored</span></div>
+      <div class="legend-item"><div class="legend-swatch path"></div><span>Path</span></div>
+    </div>
+
+    <div id="status-bar">
+      <span id="status-icon">◈</span>
+      <span id="status-text">Ready — Select an algorithm and click RUN</span>
+    </div>
+  </main>
+
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
