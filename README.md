@@ -85,7 +85,7 @@ No installation or build step required. This is a pure frontend project.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/pathfinder-ai.git
+git clone https://github.com/amanadityakeshri/pathfinder-ai.git
 
 # 2. Navigate into the folder
 cd pathfinder-ai
