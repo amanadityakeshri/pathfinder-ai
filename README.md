@@ -72,9 +72,8 @@ This project directly maps to the following AI topics:
 
 ## 🚀 Live Demo
 
-👉 **[View Live on GitHub Pages](https://yourusername.github.io/pathfinder-ai/)**
+👉 **[View Live on GitHub Pages](https://amanadityakeshri.github.io/pathfinder-ai/)**
 
-> *(Replace `yourusername` with your actual GitHub username)*
 
 ---
 
@@ -129,24 +128,6 @@ pathfinder-ai/
 - **Heuristic:** Manhattan distance for A* and Greedy Best-First Search
 - **Grid:** 14×12 cell matrix — each cell stores state (empty / wall / weighted)
 
----
-
-## 📸 Screenshots
-
-> *(Add screenshots of your project here after deploying)*
-
-| BFS Exploration | A* Path | Maze Preset |
-|---|---|---|
-| *(screenshot)* | *(screenshot)* | *(screenshot)* |
-
----
-
-## 👥 Contributors
-
-| Name | Role | GitHub |
-|---|---|---|
-| [Your Name] | Developer | [@yourusername](https://github.com/yourusername) |
-| [Contributor Name] | Developer | [@theirusername](https://github.com/theirusername) |
 
 ---
 
