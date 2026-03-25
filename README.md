@@ -72,7 +72,7 @@ This project directly maps to the following AI topics:
 
 ## 🚀 Live Demo
 
-👉 **[View Live on GitHub Pages](https://amanadityakeshri.github.io/pathfinder-ai/)**
+👉 **[View Live on GitHub Pages](https://pathfinder-ai-sooty.vercel.app/)**
 
 
 ---
